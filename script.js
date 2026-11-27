@@ -288,6 +288,25 @@ tint();
       return s;
     });
   };
+  // 실험실 상단 문구: 제목 줄을 글자로 나눠 글자마다 시작 시간(--cd) 지정 → 틀 안에서 순서대로 올라옴
+  // 섹션이 2550px로 길어 섹션 기준으로 감지하면 설명 문구가 화면 밖일 때 끝나버림 → 설명 문구가 절반 보일 때 시작
+  const labSec = document.querySelector('.lab');
+  labSec.querySelectorAll('.chars').forEach(line => {
+    const base = parseFloat(line.dataset.d) || 0, step = parseFloat(line.dataset.step) || 0.03;
+    splitChars(line).forEach((c, i) => c.style.setProperty('--cd', `${(base + i * step).toFixed(3)}s`));
+  });
+  new IntersectionObserver(([e], o) => {
+    if (!e.isIntersecting) return;
+    labSec.classList.add('is-in');
+    o.disconnect();
+  }, { threshold: 0.5 }).observe(labSec.querySelector('.lab-desc'));
+  // 슬라이더 선 그리기: 상단 문구와 700px 이상 떨어져 있어 따로 감지 — 트랙이 화면 아래 20% 위로 올라오면 시작
+  new IntersectionObserver(([e], o) => {
+    if (!e.isIntersecting) return;
+    labSec.classList.add('slider-in');
+    o.disconnect();
+  }, { rootMargin: '0px 0px -20% 0px' }).observe(labSec.querySelector('.ph-track'));
+
   const riseChars = splitChars(document.querySelector('.hero-line.rise'));
   const typeLine = document.querySelector('.hero-line.type');
   const typeChars = splitChars(typeLine);
