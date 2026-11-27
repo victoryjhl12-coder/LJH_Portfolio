@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>이지희 Portfolio</title>
+
+<!-- Fonts: SUIT / Pretendard / Playfair -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/static/woff2/SUIT.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair:opsz,wght@5..1200,700&display=swap">
+
+<style>
+  :root {
+    --s: 1;                       /* 1920px 디자인 → 화면 너비 비율 (JS에서 설정) */
+    --white: #ffffff;
+    --white-50: rgba(255, 255, 255, 0.5);
+    --white-20: rgba(255, 255, 255, 0.2);
+    --sub-gray: #dedede;
+    --text-gray: #515151;
+    --photo-blue: #cee6fc;
+    --font-suit: 'SUIT', 'Pretendard', sans-serif;
+    --font-pre: 'Pretendard', 'SUIT', sans-serif;
+    --font-serif: 'Playfair', 'Times New Roman', serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: #2b2b2b;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { display: block; }
+  a { color: inherit; text-decoration: none; }
+
+  /* 1920px 고정 디자인을 화면 너비에 맞게 확대/축소 */
+  .page { width: 1920px; zoom: var(--s); }
+
+  /* 공통: 1920 x 1080 화면 한 장 */
+  .screen {
+    position: relative;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    background: var(--white);
+  }
+  .abs { position: absolute; }
+  .bg { position: absolute; left: 0; top: 0; width: 1920.758px; height: 1081px; object-fit: cover; pointer-events: none; }
+
+  /* 회전 이미지: 바깥 박스(회전 후 경계) 안에 원본 크기 이미지를 가운데 두고 회전 */
+  .rot { position: absolute; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+  .rot img { flex: none; object-fit: cover; }
+
+  .serif {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-variation-settings: "opsz" 12, "wdth" 100;
+  }
+
+  /* ───────── 1. 썸네일 ───────── */
+  /* Portfolio 그룹 (Group 34118) */
+  #home .r1 { left: 448.97px;  top: 20.24px;  width: 942.578px;  height: 942.578px; }
+  #home .r1 img { width: 893.762px; height: 893.761px; transform: rotate(-3.22deg); }
+  #home .r2 { left: 397px;     top: -53px;    width: 1126.581px; height: 1186px; }
+  #home .r2 img { width: 1001.029px; height: 1069.524px; transform: rotate(7.16deg); }
+  #home .r3 { left: 1145.52px; top: 33.03px;  width: 201.021px;  height: 177.947px; }
+  #home .r3 img { width: 180.911px; height: 153.661px; transform: rotate(8.22deg); }
+  #home .r4 { left: 557.61px;  top: 240.41px; width: 831.142px;  height: 395.569px; }
+  #home .r4 img { width: 800.509px; height: 300.191px; transform: rotate(7deg); }
+  #home .r5 { left: 976.88px;  top: 689.48px; width: 489.38px;   height: 358.401px; }
+  #home .r5 img { width: 440.487px; height: 220.243px; transform: rotate(-20.13deg); }
+  #home .r6 { left: 842.94px;  top: 591.22px; width: 446.1px;    height: 476.083px; }
+  #home .r6 img { width: 436.784px; height: 218.392px; transform: rotate(-50.57deg); }
+  #home .r7 { left: 1578px;    top: 380px;    width: 1255.939px; height: 1255.939px; }
+  #home .r7 img { width: 896px; height: 896px; transform: rotate(-52.62deg); opacity: .6; }
+
+  /* ───────── 2. 프로필 정보 ───────── */
+  #about { color: var(--white); font-family: var(--font-suit); font-weight: 600; }
+
+  .lace-top { left: 1582px; top: -470px; width: 1131.769px; height: 1131.769px; }
+  .lace-top img { width: 815.425px; height: 815.425px; transform: rotate(-33.94deg); opacity: .6; }
+
+  /* ───────── 상단바 + 구름 알약 버튼 (2·3·4 섹션 공통) ───────── */
+  /* 상단바는 구름의 세로 중앙에 맞추고, 상단바 윗변을 섹션 구분선(y 86.5~87.5)에 맞춤
+     → 상단바 top = 86.5px, 높이 59px, 구름 높이 132.438px
+     → topbar top = 86.5 + 59/2 - 132.438/2 = 49.78px */
+  .topbar {
+    position: absolute;
+    left: 1252px; top: 49.78px;
+    width: 587.74px; height: 132.438px;
+    z-index: 10;
+  }
+  .nav {
+    position: absolute;
+    left: 0; top: 50%;
+    width: 429px; height: 59px;
+    padding-left: 28px;
+    display: flex; align-items: center; gap: 40px;
+    background: var(--white-20);
+    border-radius: 3px;
+    backdrop-filter: blur(6px);
+    font-family: var(--font-pre); font-weight: 600; font-size: 20px; line-height: 24px;
+    white-space: nowrap;
+    /* 닫힌 상태: 구름 뒤로 숨어 있음 */
+    clip-path: inset(0 0 0 100% round 3px);
+    opacity: 0;
+    transform: translate(60px, -50%);
+    pointer-events: none;
+    transition: clip-path .55s cubic-bezier(.22, 1, .36, 1),
+                transform .55s cubic-bezier(.22, 1, .36, 1),
+                opacity .3s ease;
+  }
+  .topbar.is-open .nav {
+    clip-path: inset(0 0 0 0 round 3px);
+    opacity: 1;
+    transform: translate(0, -50%);
+    pointer-events: auto;
+  }
+  .nav a { color: var(--white-50); transition: color .2s; }
+  .nav a:hover, .nav a:focus-visible, .nav a.is-active { color: var(--white); }
+  /* 밝은 배경(Archive): 배경 색이 비치는 반투명 유리 재질 */
+  .topbar.on-light .nav {
+    background: linear-gradient(135deg, rgba(130, 138, 155, 0.40), rgba(95, 103, 120, 0.32));
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow: 0 4px 16px rgba(80, 90, 110, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px) saturate(140%);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+  }
+  .topbar.on-light .nav a { color: rgba(255, 255, 255, 0.7); text-shadow: 0 1px 3px rgba(60, 70, 90, 0.35); }
+  .topbar.on-light .nav a:hover,
+  .topbar.on-light .nav a:focus-visible,
+  .topbar.on-light .nav a.is-active { color: var(--white); }
+
+  .cloud-btn {
+    position: absolute;
+    left: 414.88px; top: 0;
+    width: 172.857px; height: 132.438px;
+    overflow: hidden;
+    border: 0; background: none; padding: 0;
+    cursor: pointer;
+    /* 구름 모양을 따라가는 그림자 (2겹: 넓게 퍼지는 그림자 + 가까운 진한 그림자) */
+    filter: drop-shadow(0 14px 18px rgba(30, 40, 70, 0.28))
+            drop-shadow(0 4px 5px rgba(30, 40, 70, 0.22));
+    transition: transform .3s cubic-bezier(.34, 1.56, .64, 1);
+  }
+  .cloud-btn img { position: absolute; width: 135.52%; height: 128.17%; left: -18.03%; top: -11.76%; max-width: none; pointer-events: none; }
+  .cloud-btn:hover { transform: scale(1.06); }
+  .cloud-btn:active { transform: scale(.95); }
+  .topbar.is-open .cloud-btn { transform: rotate(-8deg); }
+  .topbar.is-open .cloud-btn:hover { transform: rotate(-8deg) scale(1.06); }
+
+  .intro { left: 183px; top: 179px; width: 810px; font-size: 36px; line-height: 42px; }
+
+  .photo { left: 183px; top: 328px; width: 350px; height: 400px; background: var(--photo-blue); }
+
+  .id-card { left: 183px; top: 763px; width: 350px; display: flex; flex-direction: column; gap: 30px; }
+  .id-name { display: flex; align-items: flex-end; gap: 10px; }
+  .id-name strong { font-weight: 600; font-size: 48px; height: 37px; display: flex; align-items: center; }
+  .id-name span   { font-size: 24px; height: 19px; color: var(--sub-gray); display: flex; align-items: center; }
+  .id-info { display: flex; flex-direction: column; gap: 10px; font-size: 20px; }
+  .id-info li { list-style: none; height: 16px; display: flex; align-items: center; }
+
+  .block-title { font-size: 24px; line-height: 29px; }
+
+  .education { left: 692px; top: 334px; width: 527px; display: flex; flex-direction: column; gap: 20px; }
+  .edu-list { list-style: none; font-size: 16px; line-height: 20px; white-space: nowrap; }
+  .edu-list li { display: grid; grid-template-columns: 197px 1fr; padding-left: 4px; }
+  .edu-list li:first-child { height: 45px; }
+  .edu-list li:last-child  { height: 40px; }
+
+  .certification { left: 1307px; top: 334px; width: 299px; display: flex; flex-direction: column; gap: 10px; }
+  .certification ul { list-style: disc; font-size: 16px; line-height: 20px; }
+  .certification li { margin-left: 24px; }
+
+  .activities { left: 691px; top: 493px; width: 599px; display: flex; flex-direction: column; gap: 20px; }
+  .activities .block-title { letter-spacing: -1.26px; }
+  .act-list { list-style: none; display: flex; flex-direction: column; gap: 10px; font-weight: 500; font-size: 16px; line-height: 20px; letter-spacing: -1.26px; }
+  .act-list li { display: grid; grid-template-columns: 154px 1fr; }
+
+  .skills-title { left: 1311px; top: 493px; }
+  .skills { left: 1311px; top: 546px; width: 311px; list-style: none; font-size: 16px; letter-spacing: -1.26px; }
+  .skills li { display: grid; grid-template-columns: 146px auto; align-items: center; height: 29px; }
+  .skills li.wide { grid-template-columns: 1fr; height: auto; row-gap: 10px; }
+  .skills li.wide .skill-name { line-height: 19px; }
+  .level { display: flex; gap: 10px; }
+  .level i {
+    width: 20px; height: 15px; border-radius: 3px;
+    border: 1px solid var(--white);
+  }
+  .level i.on { background: var(--white); }
+
+  /* ───────── 3. Projects ───────── */
+  .projects-head { left: 200px; top: 98px; width: 388px; display: flex; flex-direction: column; gap: 10px; color: var(--white); font-family: var(--font-pre); }
+  .projects-head h2 { font-weight: 600; font-size: 40px; line-height: 48px; }
+  .projects-head p  { font-weight: 500; font-size: 16px; line-height: 19px; }
+  .divider { left: 120px; top: 86.5px; width: 1680px; height: 1px; }
+
+  .project-card {
+    left: 310px; top: 242px; width: 1300px; height: 731px;
+    overflow: hidden; cursor: pointer;
+  }
+  .project-card img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+  .project-card:hover img { transform: scale(1.02); }
+
+  /* 레이스 띠: 오른쪽, 180° 회전 */
+  .lace-side { left: 1765px; top: 2px; width: 155.711px; height: 1078px; object-fit: cover; opacity: .6; transform: rotate(180deg); pointer-events: none; }
+
+  /* ───────── 4. Archive ───────── */
+  #archive { height: 1076px; }
+  .bg-archive { position: absolute; left: 0; top: 0; width: 1920px; height: 2018px; object-fit: cover; object-position: bottom; pointer-events: none; }
+  /* 하단 레이스 (세로 반전) */
+  .lace-bottom { left: 0; bottom: 0; width: 1920px; height: 132px; overflow: hidden; transform: scaleY(-1); pointer-events: none; }
+  .lace-bottom img { position: absolute; left: 0; top: -13.64%; width: 100%; height: 113.64%; max-width: none; }
+
+  .archive-head { left: 121px; top: 133px; width: 401px; display: flex; flex-direction: column; gap: 10px; color: #000; font-family: var(--font-pre); }
+  .archive-head h2 { font-weight: 600; font-size: 40px; line-height: 48px; }
+  .archive-head p  { font-weight: 500; font-size: 16px; line-height: 19px; }
+
+  .slider {
+    left: 120px; top: 279px; width: 1680px; height: 560px;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 28px 70px;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: grab;
+    user-select: none;
+    touch-action: pan-y;
+  }
+  .slider.is-dragging { cursor: grabbing; }
+  .slide-track { display: flex; gap: 50px; width: max-content; will-change: transform; }
+  .art { width: 450px; display: flex; flex-direction: column; gap: 15px; font-family: var(--font-pre); }
+  .art-img { width: 450px; height: 450px; border-radius: 10px; overflow: hidden; }
+  .art-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; -webkit-user-drag: none; }
+  .art:hover .art-img img { transform: scale(1.04); }
+  .art figcaption { display: flex; flex-direction: column; gap: 3px; }
+  .art strong { font-weight: 500; font-size: 16px; line-height: 19px; color: #000; }
+  .art span   { font-weight: 400; font-size: 14px; line-height: 17px; color: var(--text-gray); }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- 1. 썸네일 -->
+  <section class="screen" id="home">
+    <img class="bg" src="images/bg-metal.png" alt="">
+    <div class="rot r7"><img src="images/lace-hanky.png" alt=""></div>
+    <div class="rot r1"><img src="images/thumb-lace.png" alt=""></div>
+    <div class="rot r2"><img src="images/thumb-paper.png" alt=""></div>
+    <div class="rot r3"><img src="images/thumb-clip.png" alt=""></div>
+    <div class="rot r4"><img src="images/thumb-title.png" alt="Portfolio"></div>
+    <div class="rot r5"><img src="images/thumb-pill1.png" alt=""></div>
+    <div class="rot r6"><img src="images/thumb-pill2.png" alt=""></div>
+  </section>
+
+  <!-- 2. 프로필 정보 -->
+  <section class="screen" id="about">
+    <img class="bg" src="images/bg-metal.png" alt="">
+
+    <div class="abs photo" aria-label="프로필 사진"></div>
+
+    <div class="abs id-card">
+      <div class="id-name"><strong>이지희</strong><span>LEE JIHEE</span></div>
+      <ul class="id-info">
+        <li>1997.08.09</li>
+        <li>victoryjhl@naver.com</li>
+      </ul>
+    </div>
+
+    <div class="abs education">
+      <h3 class="block-title serif">EDUCATION</h3>
+      <ul class="edu-list">
+        <li><span>2020.02</span><span>목포대학교 미술학과 졸업<br>(미술학전공, 문화컨텐츠창작 복수전공)</span></li>
+        <li><span>2026.05 - 2026.12</span><span>고용노동부 직업훈련<br>AI기반 UIUX 웹디자인&amp; 웹퍼블리셔 양성과정 수료</span></li>
+      </ul>
+    </div>
+
+    <h3 class="abs block-title serif skills-title">SKILLS</h3>
+
+    <div class="abs certification">
+      <h3 class="block-title serif">CERTIFICATION</h3>
+      <ul>
+        <li>ACP(포토샵, 일러스트)</li>
+        <li>컴퓨터그래픽스 기능사 필기</li>
+        <li>웹디자인개발 기능사 필기</li>
+      </ul>
+    </div>
+
+    <p class="abs intro">정돈된 구조 위에 몽환적인 비주얼을 더해,<br>감각적인 브랜드 경험을 설계하는 디자이너 이지희입니다.</p>
+
+    <div class="abs activities">
+      <h3 class="block-title serif">Activities</h3>
+      <ul class="act-list">
+        <li><span>2025.06</span><span>압구정 빈칸 LAYER SOUND 전시</span></li>
+        <li><span>2025.04</span><span>압구정 빈칸 어쩌다가 드로잉잉 season4 전시</span></li>
+        <li><span>2024.12</span><span>더 현대 서울’oop happening #house papty’<br>팝업 내 pixpills 쇼룸 2024 애뉴얼 아트북 artist navigator 참여</span></li>
+        <li><span>2024.12</span><span>압구정 빈칸 겨울밤 슈톨렌 전시</span></li>
+        <li><span>2024.11</span><span>압구정 빈칸 POFOMANCE 전시</span></li>
+        <li><span>2024.09 - 2024.10</span><span>압구정 빈칸 일렁일러닷R 전시</span></li>
+        <li><span>2020.08 - 2020.12</span><span>목포대학교 박물관 미정리 유물관리보조원</span></li>
+        <li><span>2019.06 - 2020.01</span><span>목포 노적봉미술관 평화- 소통의 헤르츠 전시</span></li>
+        <li><span>2016.04 - 2019.12</span><span>미술대학 사진동아리 포커스 정기 전시(연간 1회), 미술대학 정기 전시 (연간 4회)</span></li>
+      </ul>
+    </div>
+
+    <ul class="abs skills serif">
+      <li><span class="skill-name">Adobe Photoshop</span><span class="level" data-level="3"></span></li>
+      <li><span class="skill-name">Adobe Illustrator</span><span class="level" data-level="3"></span></li>
+      <li><span class="skill-name">Figma</span><span class="level" data-level="4"></span></li>
+      <li><span class="skill-name">Notion</span><span class="level" data-level="4"></span></li>
+      <li><span class="skill-name">Html5, Css3</span><span class="level" data-level="3"></span></li>
+      <li><span class="skill-name">vibe coding</span><span class="level" data-level="3"></span></li>
+      <li class="wide"><span class="skill-name">Ai ( gpt, gemini, claude, codex, antigravity, google flow)</span><span class="level" data-level="4"></span></li>
+    </ul>
+
+    <div class="rot lace-top"><img src="images/lace-hanky.png" alt=""></div>
+
+    <div class="topbar">
+      <nav class="nav" id="nav-about">
+        <a href="#about" class="is-active">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#archive">Archive</a>
+        <a href="#home">home</a>
+      </nav>
+      <button type="button" class="cloud-btn" aria-expanded="false" aria-controls="nav-about" aria-label="메뉴 열기"><img src="images/deco-2283.png" alt=""></button>
+    </div>
+  </section>
+
+  <!-- 3. Projects -->
+  <section class="screen" id="projects">
+    <img class="bg" src="images/bg-projects.png" alt="" style="width:1920px">
+    <img class="abs divider" src="images/line-projects.svg" width="1680" height="1" alt="">
+    <figure class="abs project-card">
+      <img src="images/project-wiketea.jpg" alt="WIKETEA — 감정 맞춤 DIY 믹솔로지 티 브랜드">
+    </figure>
+    <img class="abs lace-side" src="images/lace-strip.png" alt="">
+    <div class="abs projects-head">
+      <h2>Projects</h2>
+      <p>기획부터 화면 설계까지 진행한 핵심 프로젝트들을 소개합니다.</p>
+    </div>
+
+    <div class="topbar">
+      <nav class="nav" id="nav-projects">
+        <a href="#about">About</a>
+        <a href="#projects" class="is-active">Projects</a>
+        <a href="#archive">Archive</a>
+        <a href="#home">home</a>
+      </nav>
+      <button type="button" class="cloud-btn" aria-expanded="false" aria-controls="nav-projects" aria-label="메뉴 열기"><img src="images/deco-2283.png" alt=""></button>
+    </div>
+  </section>
+
+  <!-- 4. Archive -->
+  <section class="screen" id="archive">
+    <img class="bg-archive" src="images/bg-archive.png" alt="">
+    <img class="abs divider" src="images/line-archive.svg" width="1680" height="1" alt="">
+
+    <div class="abs archive-head">
+      <h2>Archive</h2>
+      <p>디자인의 완성도를 높이는 시각적 표현과 캐릭터 기획 기록입니다</p>
+    </div>
+
+    <div class="abs slider" id="slider">
+      <div class="slide-track">
+        <figure class="art"><div class="art-img"><img src="images/art-01.jpg" alt="Pill dispenser"></div><figcaption><strong>Pill dispenser</strong><span>2024. Digital drawing</span></figcaption></figure>
+        <figure class="art"><div class="art-img"><img src="images/art-02.jpg" alt="Dream Aurora"></div><figcaption><strong>Dream Aurora</strong><span>2024. Digital drawing</span></figcaption></figure>
+        <figure class="art"><div class="art-img"><img src="images/art-03.jpg" alt="OVER TIME"></div><figcaption><strong>OVER TIME</strong><span>2025. Digital drawing</span></figcaption></figure>
+        <figure class="art"><div class="art-img"><img src="images/art-04.jpg" alt="Whisper of the Forest"></div><figcaption><strong>Whisper of the Forest</strong><span>2025. Digital drawing</span></figcaption></figure>
+        <figure class="art"><div class="art-img"><img src="images/art-05.jpg" alt="Good night, Sweet dreams"></div><figcaption><strong>Good night, Sweet dreams</strong><span>2024. Digital drawing, Acrylic printing</span></figcaption></figure>
+        <figure class="art"><div class="art-img"><img src="images/art-06.jpg" alt="Trick or trick"></div><figcaption><strong>Trick or trick</strong><span>2024. Digital drawing</span></figcaption></figure>
+        <figure class="art"><div class="art-img"><img src="images/art-07.jpg" alt="Make a wish"></div><figcaption><strong>Make a wish</strong><span>2024. Digital drawing, Acrylic printing</span></figcaption></figure>
+        <figure class="art"><div class="art-img"><img src="images/art-08.jpg" alt="A Little Light, A Little Wish"></div><figcaption><strong>A Little Light, A Little Wish</strong><span>2025. Digital drawing</span></figcaption></figure>
+      </div>
+    </div>
+
+    <div class="abs lace-bottom"><img src="images/lace-bottom.png" alt=""></div>
+
+    <div class="topbar on-light">
+      <nav class="nav" id="nav-archive">
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#archive" class="is-active">Archive</a>
+        <a href="#home">home</a>
+      </nav>
+      <button type="button" class="cloud-btn" aria-expanded="false" aria-controls="nav-archive" aria-label="메뉴 열기"><img src="images/deco-2283.png" alt=""></button>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // 1920px 디자인을 브라우저 너비에 맞게 비율 조정
+  function fit() {
+    document.documentElement.style.setProperty('--s', document.documentElement.clientWidth / 1920);
+  }
+  fit();
+  window.addEventListener('resize', fit);
+
+  // 스킬 레벨 칸 (5칸 중 data-level 만큼 채움)
+  document.querySelectorAll('.level').forEach(function (el) {
+    var n = +el.dataset.level;
+    for (var i = 0; i < 5; i++) {
+      var box = document.createElement('i');
+      if (i < n) box.className = 'on';
+      el.appendChild(box);
+    }
+  });
+
+  // 구름 알약 클릭 → 상단바 열기/닫기
+  document.querySelectorAll('.topbar').forEach(function (bar) {
+    var btn = bar.querySelector('.cloud-btn');
+    btn.addEventListener('click', function () {
+      var open = bar.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', open);
+      btn.setAttribute('aria-label', open ? '메뉴 닫기' : '메뉴 열기');
+    });
+  });
+
+  // Archive 슬라이드: 자동으로 부드럽게 무한 회전 (마우스를 올리면 잠시 멈춤, 드래그로 넘기기 가능)
+  var slider = document.getElementById('slider');
+  var track = slider.querySelector('.slide-track');
+  var originals = Array.prototype.slice.call(track.children);
+  originals.forEach(function (item) {          // 끊김 없이 이어지도록 한 벌 복제
+    var clone = item.cloneNode(true);
+    clone.setAttribute('aria-hidden', 'true');
+    track.appendChild(clone);
+  });
+  var GAP = 50;
+  var period = 0;                              // 원본 한 벌의 길이(px)
+  function measure() { period = originals.length * (originals[0].offsetWidth + GAP); }
+  measure();
+  window.addEventListener('load', measure);
+
+  var SPEED = 60;                              // 초당 이동 거리(px, 1920 디자인 기준)
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var offset = 0, last = null, hovering = false, dragging = false, startX = 0, startOffset = 0;
+
+  function wrap(v) { return ((v % period) + period) % period; }
+  function frame(t) {
+    if (last !== null && !hovering && !dragging && !reduceMotion) {
+      offset = wrap(offset + SPEED * Math.min(t - last, 50) / 1000);
+    }
+    last = t;
+    track.style.transform = 'translateX(' + (-offset) + 'px)';
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  slider.addEventListener('mouseenter', function () { hovering = true; });
+  slider.addEventListener('mouseleave', function () { hovering = false; });
+  slider.addEventListener('pointerdown', function (e) {
+    dragging = true; startX = e.clientX; startOffset = offset;
+    slider.classList.add('is-dragging');
+  });
+  window.addEventListener('pointermove', function (e) {
+    if (!dragging) return;
+    var s = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--s')) || 1;
+    offset = wrap(startOffset - (e.clientX - startX) / s);
+  });
+  window.addEventListener('pointerup', function () {
+    dragging = false; slider.classList.remove('is-dragging');
+  });
+  track.addEventListener('dragstart', function (e) { e.preventDefault(); });
+</script>
+</body>
+</html>
